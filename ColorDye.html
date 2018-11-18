@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.css">
+    <link rel="stylesheet" type="text/css" href="assets/mainStyle.css">
+    
+    <link rel="stylesheet" type="text/css" href="assets/waterfall.css">
+</head>
+<body>
+	<div id="mainBody">
+		<div id = "yellow_slider">
+			<input type="range" min="0" max="100" step="1" value="50" id = "yellow_slider_input" oninput="onMix()">
+		</div>
+		<div id = "blue_slider">
+			<input type="range" min="0" max="100" step="1" value="50" id = "blue_slider_input" oninput="onMix()">
+		</div>
+		<div id="sea" class="sea">
+		  <svg>
+		    <defs>
+		      <pattern id="water" width=".25" height="2" patternContentUnits="objectBoundingBox">
+		        <path fill="#FFFFFF" d="M0.25,1H0c0,0,0-0.659,0-0.916c0.083-0.303,0.158,0.334,0.25,0C0.25,0.327,0.25,1,0.25,0.5z" id="mixed_water"/>
+		      </pattern>
+		    </defs>  
+		    <rect id="waves" class="water-fill" fill="url(#water)" width="3000"/> 
+		  </svg>
+		  <img src="assets/tap.svg" width="100px" height="100px" style="position: relative; left: 100%; top: -100px;">
+		  <div id="container" style="position: relative; left: 117%; top: -17%;">
+		  	<canvas id="waterfall"></canvas>
+		  </div>
+		</div>
+	</div>
+
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>
+    <script>
+       $('input[type="range"]').rangeslider({polyfill: false});
+       function onMix(){
+       	var y_s = document.getElementById("yellow_slider_input");
+       	var b_s = document.getElementById("blue_slider_input");
+       	var rgb1 = [255,255,0], rgb2 = [0, 0, 255];
+       	// The colors to blend
+		var source = { r: 255, g: 255, b: 0, a: y_s.value/100.0 }
+		var backdrop = { r: 0, g: 0, b: 255, a: b_s.value/100.0 }
+
+		// This example shows the result of blending 'source' and 'backdrop' with the 'hue' blending mode, according to the W3C or Adobe spec
+		// However the composite could also be calculated by 'saturation', 'color' or 'luminosity' mode
+		var composite = { r: 0, g: 255, b: 0 }
+
+		// The mentioned colour compositing formula as a function
+		var colourCompositingFormula = function(as, ab, ar, Cs, Cb, Bbs) {
+		    return (1 - (as / ar)) * Cb + (as / ar) * Math.round((1 - ab) * Cs + ab * Bbs);
+		}
+
+		// Calculate the opacity of the result
+		var resultingAlpha = source.a + backdrop.a * (1 - source.a) // Adobe PDF Format Part 1 - page 331
+
+		var result = {
+		    // Adobe PDF Format Part 1 - page 328
+		    r: colourCompositingFormula(source.a, backdrop.a, resultingAlpha, source.r, backdrop.r, composite.r),
+		    g: colourCompositingFormula(source.a, backdrop.a, resultingAlpha, source.g, backdrop.g, composite.g),
+		    b: colourCompositingFormula(source.a, backdrop.a, resultingAlpha, source.b, backdrop.b, composite.b),
+		    a: resultingAlpha
+		}
+		var mixed_liquid = document.createElement("div");
+		var mainBody = document.getElementById("mainBody");
+		var m_color = "rgba("+result.r+", "+result.g+", "+result.b+", "+result.a+")";
+		if(y_s.value == 0 && b_s.value == 0) m_color="white";
+		mixed_liquid.style.backgroundColor = m_color;
+		// console.log("rgba("+result.r+", "+result.g+", "+result.b+", "+result.a+")");
+		// console.log(result);
+		var mixed_water = document.getElementById("mixed_water");
+		mixed_water.setAttribute("fill", m_color);
+		if(isCanvasSupported()){
+			var c = document.getElementById('waterfall');
+			var cw = c.width = 30;
+			var ch = c.height = 140;
+			var ctx=c.getContext("2d");
+			ctx.fillStyle = m_color;
+			ctx.fillRect(0,0,15,100);
+			// var waterfall = new waterfallCanvas(c, cw, ch, m_color);			  
+			// setupRAF();
+			// waterfall.init();
+		}
+       }
+
+    </script>
+
+    <script type="text/javascript" src="assets/waterfall.js"></script>
+</body>
+</html>
