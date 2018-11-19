@@ -99,10 +99,10 @@
 			};
 			
 			this.clearCanvas = function(){				
-				// this.ctx.globalCompositeOperation = 'destination-out';
-    			// this.ctx.fillStyle = m_color;
-    			// this.ctx.fillRect(0,0,this.cw,this.ch);
-				// this.ctx.globalCompositeOperation = 'hustartion';
+				this.ctx.globalCompositeOperation = 'destination-out';
+    			this.ctx.fillStyle = m_color;
+    			this.ctx.fillRect(0,0,this.cw,this.ch);
+				this.ctx.globalCompositeOperation = 'hustartion';
 			};
 			
 			this.loop = function(){

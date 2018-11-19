@@ -34,8 +34,10 @@ function onMix(){
 	// console.log("rgba("+result.r+", "+result.g+", "+result.b+", "+result.a+")");
 	// console.log(result);
 	var mixed_water = document.getElementById("mixed_water");
+	var y_color = "rgba("+source.r+","+source.g+","+source.b+","+y_s.value/100+")";
+	var b_color = "rgba("+backdrop.r+","+backdrop.g+","+backdrop.b+","+b_s.value/100+")";
 	mixed_water.setAttribute("fill", m_color);
-	if(isCanvasSupported()){
+	if(isCanvasSupported()){ 
 		var c = document.getElementById('waterfall');
 		var cw = c.width = 30;
 		var ch = c.height = 140;
@@ -47,25 +49,19 @@ function onMix(){
 		// waterfall.init();
 		var width = window.innerWidth;
 		var height = window.innerHeight;
-		console.log("xxx:",width, height);
-		var c = document.getElementById('waterfall1');
-		$(c).css("position", "fixed");
-		$(c).css("left", width / 2 - width*1.5/12 - 50 + width / 96 + "px");
-		$(c).css("top", height / 4 + height/8 + "px");
-		var cw = c.width = 30;
-		var ch = c.height = 140;
-		var ctx=c.getContext("2d");
-		ctx.fillStyle = "rgba("+source.r+","+source.g+","+source.b+","+y_s.value/100+")";
-		ctx.fillRect(0,0,width/40,height/3);
-		var c = document.getElementById('waterfall2');
-		$(c).css("position", "fixed");
-		$(c).css("left", width / 2 + width*1.5/12 + 50 + width * 5 / (12*8) + "px");
-		$(c).css("top", height / 4 + height/8 + "px");
-		var cw = c.width = 30;
-		var ch = c.height = 140;
-		var ctx=c.getContext("2d");
-		ctx.fillStyle = "rgba("+backdrop.r+","+backdrop.g+","+backdrop.b+","+b_s.value/100+")";
-		ctx.fillRect(0,0,width/40,height/3);
+		
+		var c = document.getElementById('input_streams');
+		c.width = width/16;
+		c.height = 140;
+		var ctx = c.getContext("2d");
+		$(c).css("position","relative");
+		$(c).css("left", -width/16);
+		$(c).css("top", -274*2*height/920+height/32);
+		ctx.fillStyle = y_color;
+		ctx.fillRect(0, 0, width/16, height/32);
+		ctx.fillStyle = b_color;
+		// console.log(source);
+		ctx.fillRect(0, 2*height/32, width/16, height/32);
 	}
 }
 $(document).ready(function(){
@@ -80,11 +76,11 @@ $(document).ready(function(){
 		$(yellow_faucet).css("position","fixed");
 		$(blue_faucet).css("position","fixed");
 		$(yellow_faucet).css("top", height / 4 + "px");
-		$(yellow_faucet).css("left", width / 2 - width*1.5/12 - 50 + "px");
+		$(yellow_faucet).css("left", width / 2 - width*1.5/12 + "px");
 		$(yellow_faucet).css("width", width/12 + "px");
 		$(yellow_faucet).css("height", height/8);
 		$(blue_faucet).css("top", height / 4 + "px");
-		$(blue_faucet).css("left", width / 2 + width*1.5/12 + 50 + "px");
+		$(blue_faucet).css("left", width / 2 + width*1.5/12 + "px");
 		$(blue_faucet).css("width", width/12 + "px");
 		$(blue_faucet).css("height", height/8);
 		$(out_faucet).css("position", "relative");

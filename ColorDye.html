@@ -14,16 +14,6 @@
 	<div id = "blue_slider">
 		<input type="range" min="0" max="100" step="1" value="50" id = "blue_slider_input" oninput="onMix()">
 	</div>
-	<div style="margin: auto;width: 50%">
-		<img src="assets/images/tap1.png" id="yellow_faucet">
-		<div id="container">
-			<canvas id="waterfall1"></canvas>
-		</div>
-		<img src="assets/images/tap2.png" id="blue_faucet">
-		<div id="container">
-			<canvas id="waterfall2"></canvas>
-		</div>
-	</div>
 	<div id="sea" class="sea">
 	  <svg>
 	    <defs>
@@ -37,6 +27,7 @@
 	  <div id="container">
 	  	<canvas id="waterfall"></canvas>
 	  </div>
+	  <canvas id="input_streams"></canvas>
 	</div>
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>
